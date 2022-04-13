@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.citi.customerapi.models.Customer;
 import com.citi.customerapi.services.CustomerService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.bohnman.squiggly.Squiggly;
+import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +85,35 @@ public class CustomerController {
 		else
 			  return ResponseEntity.status(HttpStatus.OK).body("Customer not found");
 	}
+	
+	
+	//squiggly filter
+	
+	@GetMapping(value="/v1.0/filters/{firstName}")
+	public ResponseEntity<String> getCustomerByFields(@PathVariable("firstName") String firstName,
+			@RequestParam(name = "fields", required = false) String fields){
+			
+    	
+    	List<Customer> customers = this.customerService.getCustomerByFirstName(firstName);
+    	
+    	if(customers.size()>0)
+    	{
+    		//fields refers to runtime selection
+    		ObjectMapper mapper = Squiggly.init(new ObjectMapper(), fields);  		
+			return ResponseEntity.status(HttpStatus.OK).body(SquigglyUtils.stringify(mapper,customers.get(0)));
+
+    	}
+    	else
+    	{
+	         
+		        
+	         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer Not found");
+    	}
+
+		
+		
+	}
+
 	
 	
 }

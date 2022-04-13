@@ -54,5 +54,11 @@ public class CustomerService {
     		return false;
     }
 	
+    
+    //search customer by name
+    
+    public List<Customer> getCustomerByFirstName(String firstName){
+    	return this.customerRepository.findByCustomerFirstName(firstName);
+    }
 	
 }
