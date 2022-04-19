@@ -1,0 +1,24 @@
+schema {
+    query: Query  
+}
+
+type Customer {
+	customerId: ID!
+	name: FullName
+	dob:String
+	gender:String
+}
+
+type FullName {
+
+firstName: String
+lastName: String
+middleName: String
+
+}
+
+type Query {
+	findAllCustomers:[Customer]
+	findCustomer(customerId: ID):Customer
+}
+
