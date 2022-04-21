@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class CustomerController {
 	@Value("${query}")
 	private String query;
 	//insert
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping({"/v1.0"})
 	public ResponseEntity<String> addCustomer(@RequestBody Customer customer){
 		Customer customerObj=   this.customerService.addCustomer(customer);
@@ -46,12 +48,13 @@ public class CustomerController {
 		else
 			  return ResponseEntity.status(HttpStatus.OK).body("Customer not added");
 	}
-
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping({"/v1.0"})
 	public List<Customer> getAllCustomers(){
 		log.info(query);
 		return this.customerService.getAllCustomers();
 	}
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping({"/v1.0/{customerId}"})
 	public ResponseEntity<String> getCustomerById(@PathVariable("customerId") long customerId){
 		Customer customerObj=   this.customerService.getCustomerById(customerId);
@@ -62,7 +65,7 @@ public class CustomerController {
 		else
 			  return ResponseEntity.status(HttpStatus.OK).body("Customer not found");
 	}
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping({"/v1.0/{customerId}"})
 	public ResponseEntity<String> deleteCustomerById(@PathVariable("customerId") long customerId){
 			
@@ -71,7 +74,7 @@ public class CustomerController {
 		else
 			  return ResponseEntity.status(HttpStatus.OK).body("Customer not found");
 	}
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping({"/v1.0/{customerId}/{dob}"})
 	public ResponseEntity<String> updateCustomerById(@PathVariable("customerId") long customerId,
 			@PathVariable("dob") String dob){
@@ -86,7 +89,7 @@ public class CustomerController {
 			  return ResponseEntity.status(HttpStatus.OK).body("Customer not found");
 	}
 	
-	
+	@PreAuthorize("hasRole('USER')")
 	//squiggly filter
 	
 	@GetMapping(value="/v1.0/filters/{firstName}")
