@@ -1,0 +1,44 @@
+<!--
+You can use this form through Camunda Tasklist
+by setting the formKey of a BPMN Start Event to:
+embedded:/forms/order-form.html
+-->
+
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <label for="orderId" class="col-sm-2 control-label">Order Id</label>
+    <div class="col-sm-10">
+      <input type="number"
+             name="orderId"
+             cam-variable-name="orderId"
+             cam-variable-type="Long"
+             required
+             class="form-control" />
+    </div>
+  </div>
+ <div class="form-group">
+    <label for="orderDate" class="col-sm-2 control-label">Order Date</label>
+    <div class="col-sm-10">
+      <input type="text"
+             name="orderDate"
+             cam-variable-name="orderDate"
+             cam-variable-type="String"
+             required
+             class="form-control" />
+    </div>
+  </div>
+   <div class="form-group">
+    <label for="orderAmount" class="col-sm-2 control-label">Order Amount</label>
+    <div class="col-sm-10">
+      <input type="number"
+             name="orderAmount"
+             cam-variable-name="orderAmount"
+             cam-variable-type="Long"
+             required
+             class="form-control" />
+    </div>
+  </div>
+  <script cam-script type="text/form-script">
+    // custom JavaScript goes here
+  </script>
+</form>
