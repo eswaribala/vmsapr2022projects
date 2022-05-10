@@ -1,0 +1,26 @@
+#!groovy
+pipeline{
+ agent any
+ 
+  tools {
+    maven 'maven'
+  }
+ 
+ stages{
+ 
+   stage("build"){
+   
+       steps{
+       
+          bat "mvn -f ./customerdockerapi clean install -DskipTests"
+          bat "cd customerdockerapi  & docker-compose up -d"
+                                   
+       }
+   
+   }
+ 
+ }
+ 
+ 
+ 
+}
